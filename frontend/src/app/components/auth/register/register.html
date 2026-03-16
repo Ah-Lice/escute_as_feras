@@ -1,1 +1,133 @@
-<p>register works!</p>
+<section class="min-h-screen flex items-center justify-center py-12" style="background-color: #2D5016;">
+
+  <div style="background-color: #F5F0E8; border-radius: 12px; padding: 48px; width: 100%; max-width: 480px; margin: 24px;">
+
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 32px;">
+      <img src="favicon.png" alt="Logo" style="width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 16px;" />
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; letter-spacing: 0.1em; text-transform: uppercase;">
+        Criar Conta
+      </h1>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Nome -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Nome <span style="color: #E8395A;">*</span>
+        </label>
+        <input type="text" formControlName="name" placeholder="Seu nome completo"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Nome é obrigatório</span>
+        }
+      </div>
+
+      <!-- Email -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Email <span style="color: #E8395A;">*</span>
+        </label>
+        <input type="email" formControlName="email" placeholder="seu@email.com"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Email inválido</span>
+        }
+      </div>
+
+      <!-- Telefone -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Telefone <span style="color: #E8395A;">*</span>
+        </label>
+        <input type="tel" formControlName="phone" placeholder="(11) 99999-9999"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Telefone é obrigatório</span>
+        }
+      </div>
+
+      <!-- Data de Nascimento -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Data de Nascimento <span style="color: #E8395A;">*</span>
+        </label>
+        <input type="date" formControlName="birthDate"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Data de nascimento é obrigatória</span>
+        }
+      </div>
+
+      <!-- Profissão -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Profissão <span style="color: #4A7C2F; font-weight: 400;">(opcional)</span>
+        </label>
+        <input type="text" formControlName="profession" placeholder="Sua profissão"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+      </div>
+
+      <!-- Gênero Literário -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Gênero Literário Preferido <span style="color: #4A7C2F; font-weight: 400;">(opcional)</span>
+        </label>
+        <select formControlName="preferredGenre"
+                style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;">
+          <option value="">Selecione um gênero</option>
+          @for (genero of generos; track genero) {
+            <option [value]="genero">{{ genero }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Senha -->
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Senha <span style="color: #E8395A;">*</span>
+        </label>
+        <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Senha deve ter no mínimo 6 caracteres</span>
+        }
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div style="margin-bottom: 28px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Confirmar Senha <span style="color: #E8395A;">*</span>
+        </label>
+        <input type="password" formControlName="confirmPassword" placeholder="Repita sua senha"
+               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">As senhas não coincidem</span>
+        }
+      </div>
+
+      <!-- Erro geral -->
+      @if (errorMessage()) {
+        <div style="background-color: #FCEBEB; border: 1px solid #E8395A; border-radius: 6px; padding: 10px 14px; margin-bottom: 20px;">
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A;">{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- Botão -->
+      <button type="submit" [disabled]="isLoading()"
+              style="width: 100%; padding: 12px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer; letter-spacing: 0.05em;">
+        {{ isLoading() ? 'Cadastrando...' : 'Criar Conta' }}
+      </button>
+
+    </form>
+
+    <!-- Link login -->
+    <div style="text-align: center; margin-top: 24px;">
+      <a routerLink="/login" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #2D5016; text-decoration: underline;">
+        Já tem cadastro? Entrar
+      </a>
+    </div>
+
+  </div>
+</section>

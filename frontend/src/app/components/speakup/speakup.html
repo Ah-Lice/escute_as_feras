@@ -1,1 +1,104 @@
-<p>speakup works!</p>
+<div style="background-color: #F5F0E8; min-height: 100vh;">
+
+  <!-- Header -->
+  <div style="background-color: #2D5016; padding: 48px 0 60px;">
+    <div style="max-width: 900px; margin: 0 auto; padding: 0 32px;">
+      <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #E8891A; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">✍️ Blog literário</p>
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #F5F0E8; margin-bottom: 16px;">Solte suas Feras</h1>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #F5F0E8; opacity: 0.8; line-height: 1.7; max-width: 600px; text-align: justify;">
+        Espaço de escrita livre onde mulheres soltam suas vozes em forma de texto. Poesias, crônicas, contos, ensaios, devaneios, não importa! É um espaço de criação sem censura, onde palavras não são proibidas.
+      </p>
+      <a routerLink="/solte-suas-feras/novo"
+         style="display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; padding: 12px 24px; background-color: #E8891A; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border-radius: 8px; text-decoration: none;">
+        <span class="material-icons" style="font-size: 18px;">edit</span>
+        Escrever novo texto
+      </a>
+    </div>
+  </div>
+
+  <!-- Lista de posts -->
+  <div style="max-width: 900px; margin: 0 auto; padding: 48px 32px 60px;">
+
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1A1A1A; margin-bottom: 32px; padding-bottom: 12px; border-bottom: 2px solid #E8891A; display: inline-block;">
+      Publicações recentes
+    </h2>
+
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      @for (post of posts; track post.id) {
+
+        <div style="background-color: #fff; border-radius: 12px 0 12px 12px; padding: 32px; border: 1px solid rgba(232,137,26,0.15); position: relative; overflow: hidden;">
+
+          <!-- Barra lateral laranja -->
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #E8891A; border-radius: 12px 0 0 12px;"></div>
+
+          <!-- Orelha dobrada no canto superior direito -->
+          <div style="position: absolute; top: 0; right: 0; width: 0; height: 0;
+            border-style: solid;
+            border-width: 0 56px 56px 0;
+            border-color: transparent #F5F0E8 transparent transparent;
+            filter: drop-shadow(-3px 3px 3px rgba(0,0,0,0.25));
+            z-index: 2;">
+          </div>
+          <div style="position: absolute; top: 0; right: 0; width: 40px; height: 40px;
+            background: linear-gradient(225deg, #E8891A 50%, transparent 50%);
+            border-radius: 0 0 0 4px;
+            z-index: 1;">
+          </div>
+
+          <!-- Tag -->
+          <div style="display: flex; align-items: center; margin-bottom: 12px;">
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #E8891A; background-color: rgba(232,137,26,0.1); border-radius: 20px; padding: 3px 10px; text-transform: uppercase; letter-spacing: 0.08em;">
+              {{ post.tag }}
+            </span>
+          </div>
+
+          <!-- Título -->
+          <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #1A1A1A; margin: 0 0 8px; line-height: 1.3;">
+            <a [routerLink]="['/solte-suas-feras', post.id]" style="text-decoration: none; color: inherit;">
+              {{ post.titulo }}
+            </a>
+          </h3>
+
+          <!-- Trecho -->
+          <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #444; line-height: 1.8; margin-bottom: 20px;">
+            {{ post.trecho }}
+            <span style="color: #E8891A;">...</span>
+          </p>
+
+          <!-- Divisor rosa -->
+          <div style="height: 1px; background-color: #E8395A; opacity: 0.2; margin-bottom: 16px;"></div>
+
+          <!-- Rodapé do card -->
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background-color: #2D5016; display: flex; align-items: center; justify-content: center;">
+                @if (post.anonimo) {
+                  <span class="material-icons" style="font-size: 16px; color: #F5F0E8;">visibility_off</span>
+                } @else {
+                  <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #F5F0E8; font-weight: 500;">{{ post.autor![0].toUpperCase() }}</span>
+                }
+              </div>
+              <div>
+                <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016;">
+                  {{ post.anonimo ? 'Anônimo' : post.autor }}
+                </p>
+                <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">
+                  {{ post.data | date:'dd \'de\' MMMM \'de\' yyyy' : '' : 'pt-BR' }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Ler mais -->
+            <a [routerLink]="['/solte-suas-feras', post.id]"
+               style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 500;">
+              Ler texto completo
+              <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
+            </a>
+          </div>
+
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

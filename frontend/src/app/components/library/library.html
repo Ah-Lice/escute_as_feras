@@ -1,1 +1,276 @@
-<p>library works!</p>
+<!--suppress ALL -->
+<div style="background-color: #F5F0E8; min-height: 100vh;">
+
+  <!-- Header -->
+  <div style="background-color: #2D5016; padding: 48px 0 60px;">
+    <div style="max-width: 900px; margin: 0 auto; padding: 0 32px;">
+      <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #E8891A; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">📚 Acervo</p>
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #F5F0E8; margin-bottom: 12px;">Biblioteca Clandestina</h1>
+      <p style="font-family: 'Cormorant Garamond', serif; text-align: justify; font-size: 1.1rem; color: #F5F0E8; opacity: 0.8; line-height: 1.7; max-width: 600px;">
+        Espaço de partilha insurgente onde mulheres trocam livros em formato digital como gesto de afeto, rebeldia e reconstrução coletiva. Um espaço de resistência literária, onde reunimos obras proibidas, esquecidas ou ignoradas, que atravessam fronteiras e desafiam o silêncio imposto.
+      </p>
+      <div style="width: 60px; height: 2px; background-color: #E8395A; margin-top: 24px;"></div>
+    </div>
+  </div>
+
+  <!-- Busca e Upload -->
+  <div style="max-width: 900px; margin: 0 auto; padding: 40px 32px 0;">
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 260px; position: relative;">
+        <span class="material-icons" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #4A7C2F; font-size: 20px;">search</span>
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Buscar por título, autor, gênero, país..."
+               style="width: 100%; padding: 12px 14px 12px 40px; border: 2px solid #4A7C2F; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+      </div>
+      <button (click)="openModal()"
+              style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap;">
+        <span class="material-icons" style="font-size: 18px;">upload_file</span>
+        Contribuir com livro
+      </button>
+    </div>
+
+    @if (searchQuery.trim()) {
+      <p style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; margin-top: 16px; font-weight: 500;">
+        {{ filteredBooks.length }} {{ filteredBooks.length === 1 ? 'livro encontrado' : 'livros encontrados' }}
+      </p>
+    }
+  </div>
+
+  <!-- Lista de livros -->
+  <div style="max-width: 900px; margin: 0 auto; padding: 24px 32px 60px;">
+    @if (filteredBooks.length === 0 && searchQuery.trim()) {
+      <div style="text-align: center; padding: 80px 0;">
+        <span class="material-icons" style="font-size: 48px; color: #4A7C2F; opacity: 0.3;">menu_book</span>
+        <p style="font-family: 'Inter', sans-serif; font-size: 15px; color: #4A7C2F; opacity: 0.6; margin-top: 16px;">Nenhum livro encontrado para essa busca.</p>
+      </div>
+    }
+
+    @for (book of paginatedBooks; track book.id) {
+      <div style="background-color: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; border: 1px solid rgba(74,124,47,0.15); display: flex; gap: 20px; align-items: center; position: relative; overflow: hidden;">
+        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #E8395A; border-radius: 10px 0 0 10px;"></div>
+        <div style="width: 56px; min-width: 56px; height: 80px; background-color: #4A7C2F; border-radius: 4px; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 6px rgba(0,0,0,0.15);">
+          @if (book.capa) {
+            <img [src]="book.capa" [alt]="book.titulo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;" />
+          } @else {
+            <span class="material-icons" style="color: #F5F0E8; font-size: 22px; opacity: 0.7;">menu_book</span>
+          }
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <h3 style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; color: #1A1A1A; margin-bottom: 2px; line-height: 1.4;">{{ book.titulo }}</h3>
+          <p style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #E8891A; margin-bottom: 10px;">{{ book.autor }}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #791F1F; background-color: rgba(232,57,90,0.1); border-radius: 20px; padding: 2px 9px;">{{ book.genero }}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #2D5016; background-color: #F5F0E8; border: 1px solid rgba(74,124,47,0.3); border-radius: 20px; padding: 2px 9px;">{{ book.editora }}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #2D5016; background-color: #F5F0E8; border: 1px solid rgba(74,124,47,0.3); border-radius: 20px; padding: 2px 9px;">{{ book.anoPublicacao }}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #2D5016; background-color: #F5F0E8; border: 1px solid rgba(74,124,47,0.3); border-radius: 20px; padding: 2px 9px;">{{ book.paisPublicacao }}</span>
+          </div>
+          <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #888;">ISBN: {{ book.isbn }}</p>
+        </div>
+        <button (click)="downloadBook(book)" title="Baixar livro"
+                style="display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 12px; background-color: #E8395A; color: #F5F0E8; border: none; border-radius: 6px; cursor: pointer; min-width: 52px; flex-shrink: 0;">
+          <span class="material-icons" style="font-size: 18px;">download</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em;">Baixar</span>
+        </button>
+      </div>
+    }
+
+    <!-- Paginação -->
+    @if (totalPages > 1) {
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 32px;">
+
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+                style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 6px; border: 2px solid #E8395A; background: #fff; color: #2D5016; cursor: pointer;"
+                [style.opacity]="currentPage === 1 ? '0.3' : '1'">
+          <span class="material-icons" style="font-size: 18px;">chevron_left</span>
+        </button>
+
+        @for (page of pages; track page) {
+          <button (click)="goToPage(page)"
+                  style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: 2px solid #E8395A;"
+                  [style.background-color]="page === currentPage ? '#2D5016' : '#fff'"
+                  [style.color]="page === currentPage ? '#F5F0E8' : '#2D5016'">
+            {{ page }}
+          </button>
+        }
+
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"
+                style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 6px; border: 2px solid #E8395A; background: #fff; color: #2D5016; cursor: pointer;"
+                [style.opacity]="currentPage === totalPages ? '0.3' : '1'">
+          <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+        </button>
+
+      </div>
+
+      <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #888; text-align: center; margin-top: 12px;">
+        Página {{ currentPage }} de {{ totalPages }}
+      </p>
+    }
+
+  </div>
+</div>
+
+<!-- Modal -->
+@if (isModalOpen()) {
+  <div style="position: fixed; inset: 0; background-color: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px;"
+       (click)="closeModal()">
+    <div style="background-color: #F5F0E8; border-radius: 12px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;"
+         (click)="$event.stopPropagation()">
+
+      <div style="background-color: #2D5016; padding: 24px 28px; border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #F5F0E8; margin-bottom: 2px;">Contribuir com livro</h2>
+          <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #F5F0E8; opacity: 0.6;">Adicione uma obra ao acervo coletivo</p>
+        </div>
+        <button (click)="closeModal()" style="background: none; border: none; color: #F5F0E8; cursor: pointer; opacity: 0.7;">
+          <span class="material-icons" style="font-size: 22px;">close</span>
+        </button>
+      </div>
+
+      @if (successMessage()) {
+        <div style="margin: 20px 28px 0; background-color: #E1F5EE; border: 1px solid #1D9E75; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
+          <span class="material-icons" style="color: #1D9E75; font-size: 20px;">check_circle</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #085041;">{{ successMessage() }}</span>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <div style="margin: 20px 28px 0; background-color: #FCEBEB; border: 1px solid #E8395A; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
+          <span class="material-icons" style="color: #E8395A; font-size: 20px;">error_outline</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A;">{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" style="padding: 28px;">
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Título <span style="color: #E8395A;">*</span></label>
+          <input type="text" formControlName="titulo" placeholder="Título do livro"
+                 style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;" />
+          @if (bookForm.get('titulo')?.invalid && bookForm.get('titulo')?.touched) {
+            <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+          }
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Autor(a) <span style="color: #E8395A;">*</span></label>
+          <input type="text" formControlName="autor" placeholder="Nome do autor ou autora"
+                 style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;" />
+          @if (bookForm.get('autor')?.invalid && bookForm.get('autor')?.touched) {
+            <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+          }
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div style="flex: 1;">
+            <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Editora <span style="color: #E8395A;">*</span></label>
+            <input type="text" formControlName="editora" placeholder="Nome da editora"
+                   style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;" />
+            @if (bookForm.get('editora')?.invalid && bookForm.get('editora')?.touched) {
+              <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+            }
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">ISBN <span style="color: #E8395A;">*</span></label>
+            <input type="text" formControlName="isbn" placeholder="978..."
+                   (input)="onIsbnInput($event)"
+                   style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;" />
+            @if (bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched) {
+              <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+            }
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div style="flex: 1;">
+            <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Ano <span style="color: #E8395A;">*</span></label>
+            <input type="text" formControlName="anoPublicacao" placeholder="2024"
+                   (input)="onAnoInput($event)"
+                   style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;" />
+            @if (bookForm.get('anoPublicacao')?.invalid && bookForm.get('anoPublicacao')?.touched) {
+              <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+            }
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">País <span style="color: #E8395A;">*</span></label>
+            <input type="text" formControlName="paisPublicacao" placeholder="Brasil"
+                   style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;" />
+            @if (bookForm.get('paisPublicacao')?.invalid && bookForm.get('paisPublicacao')?.touched) {
+              <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+            }
+          </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Gênero Literário <span style="color: #E8395A;">*</span></label>
+          <select formControlName="genero"
+                  style="width: 100%; padding: 10px 14px; border: 2px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; outline: none; box-sizing: border-box;">
+            <option value="">Selecione um gênero</option>
+            @for (genero of generos; track genero) {
+              <option [value]="genero">{{ genero }}</option>
+            }
+          </select>
+          @if (bookForm.get('genero')?.invalid && bookForm.get('genero')?.touched) {
+            <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Campo obrigatório</span>
+          }
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Capa <span style="color: #E8395A;">*</span></label>
+          @if (capaPreview()) {
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+              <img ngSrc="capaPreview()!" alt="Preview da capa" style="width: 60px; height: 84px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(74,124,47,0.3);" />
+              <div>
+                <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #2D5016; font-weight: 500;">Capa carregada ✓</p>
+                <button type="button" (click)="capaPreview.set(null); capaFile = null"
+                        style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; margin-top: 4px;">
+                  Remover
+                </button>
+              </div>
+            </div>
+          }
+          @if (!capaPreview()) {
+            <label style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px; border: 2px dashed #4A7C2F; border-radius: 6px; cursor: pointer; background: #fff;">
+              <span class="material-icons" style="font-size: 28px; color: #4A7C2F; opacity: 0.6;">add_photo_alternate</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4A7C2F;">Clique para carregar a capa</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #888;">JPG, PNG ou WEBP</span>
+              <input type="file" accept="image/*" (change)="onCapaChange($event)" style="display: none;" />
+            </label>
+          }
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #2D5016; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Arquivo do Livro (.epub) <span style="color: #E8395A;">*</span></label>
+          @if (epubFileName()) {
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 2px solid #4A7C2F; border-radius: 6px; background: #fff;">
+              <span class="material-icons" style="color: #2D5016; font-size: 20px;">menu_book</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #2D5016; flex: 1;">{{ epubFileName() }}</span>
+              <button type="button" (click)="epubFile = null; epubFileName.set(null)"
+                      style="background: none; border: none; cursor: pointer; color: #E8395A; padding: 0;">
+                <span class="material-icons" style="font-size: 18px;">close</span>
+              </button>
+            </div>
+          }
+          @if (!epubFileName()) {
+            <label style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px; border: 2px dashed #4A7C2F; border-radius: 6px; cursor: pointer; background: #fff;">
+              <span class="material-icons" style="font-size: 28px; color: #4A7C2F; opacity: 0.6;">upload_file</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4A7C2F;">Clique para carregar o arquivo</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #888;">Apenas formato .epub</span>
+              <input type="file" accept=".epub" (change)="onEpubChange($event)" style="display: none;" />
+            </label>
+          }
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button type="button" (click)="closeModal()"
+                  style="flex: 1; padding: 12px; background-color: transparent; color: #2D5016; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; border: 2px solid #2D5016; border-radius: 6px; cursor: pointer;">
+            Cancelar
+          </button>
+          <button type="submit" [disabled]="isLoading()"
+                  style="flex: 1; padding: 12px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer;">
+            {{ isLoading() ? 'Salvando...' : 'Adicionar livro' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+}

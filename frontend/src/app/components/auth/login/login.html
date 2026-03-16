@@ -1,1 +1,84 @@
-<p>login works!</p>
+<section class="min-h-screen flex items-center justify-center" style="background-color: #2D5016;">
+
+  <div style="background-color: #F5F0E8; border-radius: 12px; padding: 48px; width: 100%; max-width: 420px; margin: 24px;">
+
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 32px;">
+      <img src="favicon.png" alt="Logo" style="width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 16px;" />
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; letter-spacing: 0.1em; text-transform: uppercase;">
+        Escute as Feras
+      </h1>
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Email
+        </label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+          style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Email inválido</span>
+        }
+      </div>
+
+      <!-- Senha -->
+      <div style="margin-bottom: 28px;">
+        <label style="display: block; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 6px;">
+          Senha
+        </label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••"
+          style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; outline: none; box-sizing: border-box;" />
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span style="font-size: 12px; color: #E8395A; margin-top: 4px; display: block;">Senha deve ter no mínimo 6 caracteres</span>
+        }
+      </div>
+
+      <!-- Erro geral -->
+      @if (errorMessage()) {
+        <div style="background-color: #FCEBEB; border: 1px solid #E8395A; border-radius: 6px; padding: 10px 14px; margin-bottom: 20px;">
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A;">{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- Botão -->
+      <button
+        type="submit"
+        [disabled]="isLoading()"
+        style="width: 100%; padding: 12px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer; letter-spacing: 0.05em;">
+        {{ isLoading() ? 'Entrando...' : 'Entrar' }}
+      </button>
+
+    </form>
+    <!-- Divisor -->
+    <div style="display: flex; align-items: center; gap: 12px; margin: 24px 0;">
+      <div style="flex: 1; height: 1px; background-color: #4A7C2F; opacity: 0.3;"></div>
+      <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #2D5016; opacity: 0.6;">ou</span>
+      <div style="flex: 1; height: 1px; background-color: #4A7C2F; opacity: 0.3;"></div>
+    </div>
+
+    <!-- Botão Google -->
+    <button
+      type="button"
+      style="width: 100%; padding: 12px; background-color: #fff; color: #1A1A1A; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; border: 1.5px solid #4A7C2F; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <img src="https://www.google.com/favicon.ico" style="width: 18px; height: 18px;" />
+      Entrar com Google
+    </button>
+    <!-- Links -->
+    <div style="text-align: center; margin-top: 24px;">
+      <a routerLink="/cadastro" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #2D5016; text-decoration: underline;">
+        Ainda não tem cadastro?
+      </a>
+    </div>
+
+  </div>
+</section>
