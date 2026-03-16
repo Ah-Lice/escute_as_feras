@@ -1,0 +1,38 @@
+<div class="fixed top-0 left-0 w-full z-40 h-4" (mouseenter)="onMouseEnter()"></div>
+
+<nav class="fixed top-0 left-0 w-full z-50 transition-transform duration-300 bg-floresta"
+     [class.-translate-y-full]="!isNavbarVisible()"
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()">
+  <div style="padding-left: 10px; padding-right: 80px; padding-top: 20px; padding-bottom: 20px;" class="w-full flex items-center gap-8">
+
+    <a routerLink="/" class="flex items-center gap-3 shrink-0">
+      <img src="favicon.png" alt="Logo" class="w-11 h-11 rounded-full" />
+      <span class="font-titulo text-creme text-3xl tracking-widest uppercase whitespace-nowrap">Escute as Feras</span>
+    </a>
+
+    <ul class="hidden md:flex items-center justify-center gap-8 flex-1">
+      @for (link of navLinks; track link.path) {
+        <li>
+          <a [routerLink]="link.path" routerLinkActive="text-onca border-b-2 border-onca" [routerLinkActiveOptions]="{exact: true}" class="font-corpo text-creme text-sm tracking-wide hover:text-onca transition-colors duration-200 pb-1 whitespace-nowrap">{{ link.label }}</a>
+        </li>
+      }
+    </ul>
+
+    <a routerLink="/login" style="color: #2D5016; background-color: #F5F0E8; padding: 8px 20px; border-radius: 6px; font-size: 14px; font-family: Inter, sans-serif; text-decoration: none; font-weight: 500;" class="hidden md:block whitespace-nowrap">Entrar</a>
+
+    <button class="md:hidden text-creme focus:outline-none ml-auto" (click)="toggleMenu()">
+      <span class="material-icons text-3xl">{{ isMenuOpen() ? 'close' : 'menu' }}</span>
+    </button>
+  </div>
+
+  @if (isMenuOpen()) {
+    <div class="md:hidden bg-floresta border-t border-musgo px-16 py-6 flex flex-col gap-5">
+      @for (link of navLinks; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="text-onca" [routerLinkActiveOptions]="{exact: true}" class="font-corpo text-creme text-base hover:text-onca transition-colors duration-200" (click)="toggleMenu()">{{ link.label }}</a>
+      }
+      <a routerLink="/login" style="color: #2D5016; background-color: #F5F0E8; padding: 8px 20px; border-radius: 6px; font-size: 14px; font-family: Inter, sans-serif; text-decoration: none; font-weight: 500;" class="text-center" (click)="toggleMenu()">Entrar</a>
+    </div>
+  }
+</nav>
+

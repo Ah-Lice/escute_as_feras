@@ -1,0 +1,4 @@
+<app-navbar (visibilityChange)="navbarVisible = $event"></app-navbar>
+<main [style.padding-top]="navbarVisible ? '80px' : '0'" style="transition: padding-top 0.1s ease;">
+  <router-outlet></router-outlet>
+</main>
