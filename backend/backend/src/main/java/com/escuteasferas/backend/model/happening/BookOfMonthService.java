@@ -1,11 +1,9 @@
 package com.escuteasferas.backend.model.happening;
 
-import com.escuteasferas.backend.model.users.User;
 import com.escuteasferas.backend.model.users.UserRepository;
 import com.escuteasferas.backend.payload.BookOfMonthRequest;
 import com.escuteasferas.backend.payload.CommentRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,11 +26,6 @@ public class BookOfMonthService {
         Author author = authorRepository.findById(request.authorId())
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
         BookOfMonth book = BookOfMonth.builder()
                 .title(request.title())
                 .author(author)
@@ -46,14 +39,14 @@ public class BookOfMonthService {
                 .eventFormat(request.eventFormat())
                 .eventLocation(request.eventLocation())
                 .tags(request.tags())
-                .createdBy(user)
                 .active(true)
                 .build();
 
         return bookRepository.save(book);
     }
 
-    public BookOfMonthComments addComment(Long bookId, CommentRequest request) {
+
+     public BookOfMonthComments addComment(Long bookId, CommentRequest request) {
         BookOfMonth book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
 
