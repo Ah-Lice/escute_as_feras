@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +25,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -64,11 +66,13 @@ export class RegisterComponent {
       .subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify({
+          const user = {
             name: response.name,
             email: response.email,
             role: response.role
-          }));
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          this.authService.currentUser.set(user);
           this.isLoading.set(false);
           this.router.navigate(['/acontecendo']);
         },

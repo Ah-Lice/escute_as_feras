@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -36,16 +38,18 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify({
+          const user = {
             name: response.name,
             email: response.email,
             role: response.role
-          }));
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          this.authService.currentUser.set(user);
           this.isLoading.set(false);
           this.router.navigate(['/acontecendo']);
         },
         error: () => {
-          this.errorMessage.set('Email ou senha incorretos.');
+          this.errorMessage.set('Credenciais inválidas.');
           this.isLoading.set(false);
         }
       });

@@ -26,7 +26,6 @@ public class BookOfMonthController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BookOfMonth> createBook(
             @Valid @RequestBody BookOfMonthRequest request) {
         return ResponseEntity.ok(bookService.createBook(request));
@@ -46,7 +45,6 @@ public class BookOfMonthController {
     }
 
     @DeleteMapping("/comments/{commentId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteComment(
             @PathVariable Long commentId) {
         bookService.deleteComment(commentId);

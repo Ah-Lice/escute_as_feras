@@ -2,6 +2,7 @@ import { Component, signal, Output, EventEmitter } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,12 +13,19 @@ import { MatButtonModule } from '@angular/material/button';
 export class NavbarComponent {
   isMenuOpen = signal(false);
   isNavbarVisible = signal(true);
+  isUserMenuOpen = signal(false);
   private hideTimeout: any;
 
   @Output() visibilityChange = new EventEmitter<boolean>();
 
+  constructor(public authService: AuthService) {}
+
   toggleMenu() {
     this.isMenuOpen.update(v => !v);
+  }
+
+  toggleUserMenu() {
+    this.isUserMenuOpen.update(v => !v);
   }
 
   onMouseEnter() {
@@ -30,8 +38,9 @@ export class NavbarComponent {
     this.hideTimeout = setTimeout(() => {
       this.isNavbarVisible.set(false);
       this.isMenuOpen.set(false);
+      this.isUserMenuOpen.set(false);
       this.visibilityChange.emit(false);
-    }, 200);
+    }, 300);
   }
 
   navLinks = [

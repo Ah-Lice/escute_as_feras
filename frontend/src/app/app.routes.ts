@@ -9,11 +9,12 @@ import { ArchiveComponent } from './components/archive/archive';
 import { LoginComponent } from './components/auth/login/login';
 import { RegisterComponent } from './components/auth/register/register';
 import { SpeakupPostComponent } from './components/speakup-post/speakup-post';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'acontecendo', component: HappeningComponent },
-  { path: 'biblioteca', component: LibraryComponent },
+  { path: 'biblioteca', component: LibraryComponent, canActivate: [authGuard] },
   { path: 'solte-suas-feras', component: SpeakupComponent },
   { path: 'blog/:id', component: SpeakupPostComponent },
   { path: 'eventos', component: EventsComponent },

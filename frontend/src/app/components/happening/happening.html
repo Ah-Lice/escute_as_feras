@@ -1,179 +1,181 @@
-<div style="background-color: #F5F0E8; min-height: 100vh;">
-
-  <!-- Hero do livro -->
-  <div style="background-color: #2D5016; padding: 60px 0 80px;">
-    <div style="max-width: 900px; margin: 0 auto; padding: 0 32px; display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap;">
-
-      <!-- Capa placeholder -->
-      <div style="width: 200px; min-width: 200px; height: 300px; background-color: #4A7C2F; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; box-shadow: 8px 8px 24px rgba(0,0,0,0.4);">
-        <span style="font-size: 48px;">📖</span>
-        <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em;">Capa em breve</span>
-      </div>
-
-      <!-- Infos do livro -->
-      <div style="flex: 1; min-width: 260px;">
-        <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #E8891A; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">📚 Livro do Mês</p>
-        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #F5F0E8; line-height: 1.2; margin-bottom: 12px;">{{ book.title }}</h1>
-        <p style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #E8891A; font-style: italic; margin-bottom: 24px;">{{ book.author }}</p>
-
-        <!-- Tags -->
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
-          @for (tag of book.tags; track tag) {
-            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; border: 1px solid #E8395A; background-color: rgba(232,57,90,0.1); border-radius: 20px; padding: 4px 12px;">{{ tag }}</span>
-          }
-        </div>
-
-        <!-- Detalhes -->
-        <div style="display: flex; gap: 24px; flex-wrap: wrap;">
-          <div>
-            <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em;">Páginas</p>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8;">{{ book.pages }}</p>
-          </div>
-          <div>
-            <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em;">Editora</p>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8;">{{ book.publisher }}</p>
-          </div>
-          <div>
-            <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em;">Ano</p>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8;">{{ book.year }}</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Post-it data do encontro -->
-      <div style="background-color: #E8891A; border-radius: 4px; padding: 24px; min-width: 180px; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transform: rotate(4.5deg);">
-        <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #2D5016; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 8px;">📅 Próximo Encontro</p>
-        <p style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #2D5016; font-weight: 700; margin-bottom: 4px;">{{ nextEvent.date }}</p>
-        <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #2D5016; margin-bottom: 4px;">{{ nextEvent.time }}</p>
-        <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #2D5016; opacity: 0.8;">{{ nextEvent.format }} · {{ nextEvent.location }}</p>
-      </div>
-
-    </div>
+@if (isLoading()) {
+  <div style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
+    <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #4A7C2F;">Carregando...</p>
   </div>
+} @else if (errorMessage()) {
+  <div style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
+    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #888; font-style: italic;">{{ errorMessage() }}</p>
+  </div>
+} @else {
+  <div style="background-color: #F5F0E8; min-height: 100vh;">
 
-  <!-- Conteúdo -->
-  <div style="max-width: 900px; margin: 0 auto; padding: 60px 32px;">
+    <!-- Hero do livro -->
+    <div style="background-color: #2D5016; padding: 60px 0 80px;">
+      <div style="max-width: 900px; margin: 0 auto; padding: 0 32px; display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap;">
 
-    <!-- Descrição do livro -->
-    <div style="margin-bottom: 48px;">
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">Sobre o livro</h2>
-      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #1A1A1A; line-height: 1.9;">{{ book.description }}</p>
-    </div>
+        <!-- Capa -->
+        <div style="width: 200px; min-width: 200px; height: 300px; background-color: #4A7C2F; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; box-shadow: 8px 8px 24px rgba(0,0,0,0.4);">
+          @if (book?.coverUrl) {
+            <img [src]="book.coverUrl" alt="Capa do livro" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+          } @else {
+            <span style="font-size: 48px;">📖</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em;">Capa em breve</span>
+          }
+        </div>
 
-    <!-- Divisor -->
-    <div style="height: 1px; background-color: #4A7C2F; opacity: 0.2; margin-bottom: 48px;"></div>
+        <!-- Infos do livro -->
+        <div style="flex: 1; min-width: 260px;">
+          <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #E8891A; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">📚 Livro do Mês</p>
+          <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #F5F0E8; line-height: 1.2; margin-bottom: 12px;">{{ book?.title }}</h1>
+          <p style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #E8891A; font-style: italic; margin-bottom: 24px;">{{ book?.author?.name }}</p>
 
-    <!-- Sobre a autora -->
-    <div style="margin-bottom: 48px;">
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">Sobre a autora</h2>
-      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #1A1A1A; line-height: 1.9;">{{ book.authorBio }}</p>
-    </div>
-
-    <!-- Divisor -->
-    <div style="height: 1px; background-color: #4A7C2F; opacity: 0.2; margin-bottom: 48px;"></div>
-
-    <!-- Link arquivo -->
-    <div style="margin-bottom: 48px; text-align: center;">
-      <a routerLink="/arquivo" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: underline;">
-        Ver livros discutidos anteriormente →
-      </a>
-    </div>
-
-    <!-- Divisor -->
-    <div style="height: 1px; background-color: #4A7C2F; opacity: 0.2; margin-bottom: 48px;"></div>
-
-    <!-- Comentários -->
-    <div>
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 32px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">
-        Comentários ({{ comments.length }})
-      </h2>
-
-      <!-- Formulário novo comentário -->
-      <div style="background-color: #fff; border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(74,124,47,0.2); border-left: 4px solid #E8395A;">
-        <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 16px;">Deixe seu comentário</p>
-        <input type="text" [(ngModel)]="newComment.author" placeholder="Seu nome"
-               style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; box-sizing: border-box; outline: none;" />
-        <textarea [(ngModel)]="newComment.text" placeholder="O que você achou do livro?" rows="4"
-                  style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
-        <button (click)="addComment()"
-                style="margin-top: 12px; padding: 10px 24px; background-color: #E8395A; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer;">
-          Comentar
-        </button>
-      </div>
-
-      <!-- Lista de comentários -->
-      @for (comment of comments; track comment.id) {
-        <div style="margin-bottom: 24px;">
-
-          <!-- Comentário principal -->
-          <div style="background-color: #fff; border-radius: 8px; padding: 20px; border: 1px solid rgba(74,124,47,0.2); position: relative; border-left: 4px solid #E8891A;">
-
-            <!-- Botão excluir -->
-            <button (click)="deleteComment(comment.id)" title="Apagar comentário"
-                    style="position: absolute; top: 12px; right: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; opacity: 0.6;">
-              <span class="material-icons" style="font-size: 18px;">delete_outline</span>
-            </button>
-
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background-color: #E8395A; display: flex; align-items: center; justify-content: center;">
-                <span style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8; font-weight: 500;">{{ comment.author[0].toUpperCase() }}</span>
-              </div>
-              <div>
-                <p style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #1A1A1A;">{{ comment.author }}</p>
-                <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">{{ comment.date | date:'dd/MM/yyyy' }}</p>
-              </div>
-            </div>
-            <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #1A1A1A; line-height: 1.7;">{{ comment.text }}</p>
-            <button (click)="toggleReplyForm(comment)"
-                    style="margin-top: 12px; font-family: 'Inter', sans-serif; font-size: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;">
-              Responder
-            </button>
+          <!-- Tags -->
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
+            @for (tag of book?.tags; track tag) {
+              <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; border: 1px solid #E8395A; background-color: rgba(232,57,90,0.1); border-radius: 20px; padding: 4px 12px;">{{ tag }}</span>
+            }
           </div>
 
-          <!-- Formulário de resposta -->
-          @if (comment.showReplyForm) {
-            <div style="margin-left: 32px; margin-top: 12px; background-color: #fff; border-radius: 8px; padding: 16px; border: 1px solid rgba(74,124,47,0.2);">
-              <textarea [(ngModel)]="comment.replyText" placeholder="Sua resposta..." rows="3"
-                        style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
-              <div style="display: flex; gap: 8px; margin-top: 8px;">
-                <button (click)="addReply(comment)"
-                        style="padding: 8px 20px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 12px; border: none; border-radius: 6px; cursor: pointer;">
-                  Responder
-                </button>
-                <button (click)="toggleReplyForm(comment)"
-                        style="padding: 8px 20px; background-color: transparent; color: #2D5016; font-family: 'Inter', sans-serif; font-size: 12px; border: 1px solid #2D5016; border-radius: 6px; cursor: pointer;">
-                  Cancelar
-                </button>
-              </div>
+          <!-- Detalhes -->
+          <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+            <div>
+              <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em;">Páginas</p>
+              <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8;">{{ book?.pages }}</p>
             </div>
-          }
+            <div>
+              <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em;">Editora</p>
+              <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8;">{{ book?.publisher }}</p>
+            </div>
+            <div>
+              <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em;">Ano</p>
+              <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8;">{{ book?.year }}</p>
+            </div>
+          </div>
+        </div>
 
-          <!-- Respostas -->
-          @for (reply of comment.replies; track reply.id) {
-            <div style="margin-left: 32px; margin-top: 8px; background-color: #f9f6f0; border-radius: 8px; padding: 16px; border: 1px solid rgba(74,124,47,0.15); position: relative; border-left: 4px solid #E8395A;">
+        <!-- Post-it data do encontro -->
+        <div style="background-color: #E8891A; border-radius: 4px; padding: 24px; min-width: 180px; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transform: rotate(4.5deg);">
+          <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #2D5016; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 8px;">📅 Próximo Encontro</p>
+          <p style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #2D5016; font-weight: 700; margin-bottom: 4px;">{{ book?.eventDate | date:'dd \'de\' MMMM \'de\' yyyy' : '' : 'pt-BR' }}</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #2D5016; margin-bottom: 4px;">{{ book?.eventTime }}</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: #2D5016; opacity: 0.8;">{{ book?.eventFormat }} · {{ book?.eventLocation }}</p>
+        </div>
 
-              <!-- Botão excluir reply -->
-              <button (click)="deleteReply(comment, reply.id)" title="Excluir resposta"
-                      style="position: absolute; top: 10px; right: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; opacity: 0.6;">
+      </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div style="max-width: 900px; margin: 0 auto; padding: 60px 32px;">
+
+      <!-- Descrição do livro -->
+      <div style="margin-bottom: 48px;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">Sobre o livro</h2>
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #1A1A1A; line-height: 1.9;">{{ book?.description }}</p>
+      </div>
+
+      <div style="height: 1px; background-color: #4A7C2F; opacity: 0.2; margin-bottom: 48px;"></div>
+
+      <!-- Sobre a autora -->
+      <div style="margin-bottom: 48px;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">Sobre a autora</h2>
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #1A1A1A; line-height: 1.9;">{{ book?.author?.bio }}</p>
+      </div>
+
+      <div style="height: 1px; background-color: #4A7C2F; opacity: 0.2; margin-bottom: 48px;"></div>
+
+      <!-- Link arquivo -->
+      <div style="margin-bottom: 48px; text-align: center;">
+        <a routerLink="/arquivo" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: underline;">
+          Ver livros discutidos anteriormente →
+        </a>
+      </div>
+
+      <div style="height: 1px; background-color: #4A7C2F; opacity: 0.2; margin-bottom: 48px;"></div>
+
+      <!-- Comentários -->
+      <div>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 32px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">
+          Comentários ({{ comments.length }})
+        </h2>
+
+        <!-- Formulário novo comentário -->
+        <div style="background-color: #fff; border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(74,124,47,0.2); border-left: 4px solid #E8395A;">
+          <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 16px;">Deixe seu comentário</p>
+          <input type="text" [(ngModel)]="newComment.authorName" placeholder="Seu nome"
+                 style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; box-sizing: border-box; outline: none;" />
+          <textarea [(ngModel)]="newComment.text" placeholder="O que você achou do livro?" rows="4"
+                    style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
+          <button (click)="addComment()"
+                  style="margin-top: 12px; padding: 10px 24px; background-color: #E8395A; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer;">
+            Comentar
+          </button>
+        </div>
+
+        <!-- Lista de comentários -->
+        @for (comment of comments; track comment.id) {
+          <div style="margin-bottom: 24px;">
+
+            <div style="background-color: #fff; border-radius: 8px; padding: 20px; border: 1px solid rgba(74,124,47,0.2); position: relative; border-left: 4px solid #E8891A;">
+              <button (click)="deleteComment(comment.id)" title="Apagar comentário"
+                      style="position: absolute; top: 12px; right: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; opacity: 0.6;">
                 <span class="material-icons" style="font-size: 18px;">delete_outline</span>
               </button>
-
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                <div style="width: 28px; height: 28px; border-radius: 50%; background-color: #E8395A; display: flex; align-items: center; justify-content: center;">
-                  <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #F5F0E8; font-weight: 500;">{{ reply.author[0].toUpperCase() }}</span>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background-color: #E8395A; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8; font-weight: 500;">{{ comment.authorName[0].toUpperCase() }}</span>
                 </div>
                 <div>
-                  <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #1A1A1A;">{{ reply.author }}</p>
-                  <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">{{ reply.date | date:'dd/MM/yyyy' }}</p>
+                  <p style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #1A1A1A;">{{ comment.authorName }}</p>
+                  <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">{{ comment.createdAt | date:'dd/MM/yyyy' }}</p>
                 </div>
               </div>
-              <p style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #1A1A1A; line-height: 1.7;">{{ reply.text }}</p>
+              <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #1A1A1A; line-height: 1.7;">{{ comment.text }}</p>
+              <button (click)="toggleReplyForm(comment)"
+                      style="margin-top: 12px; font-family: 'Inter', sans-serif; font-size: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;">
+                Responder
+              </button>
             </div>
-          }
 
-        </div>
-      }
+            @if (comment.showReplyForm) {
+              <div style="margin-left: 32px; margin-top: 12px; background-color: #fff; border-radius: 8px; padding: 16px; border: 1px solid rgba(74,124,47,0.2);">
+              <textarea [(ngModel)]="comment.replyText" placeholder="Sua resposta..." rows="3"
+                        style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
+                <div style="display: flex; gap: 8px; margin-top: 8px;">
+                  <button (click)="addReply(comment)"
+                          style="padding: 8px 20px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 12px; border: none; border-radius: 6px; cursor: pointer;">
+                    Responder
+                  </button>
+                  <button (click)="toggleReplyForm(comment)"
+                          style="padding: 8px 20px; background-color: transparent; color: #2D5016; font-family: 'Inter', sans-serif; font-size: 12px; border: 1px solid #2D5016; border-radius: 6px; cursor: pointer;">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            }
+
+            @for (reply of comment.replies; track reply.id) {
+              <div style="margin-left: 32px; margin-top: 8px; background-color: #f9f6f0; border-radius: 8px; padding: 16px; border: 1px solid rgba(74,124,47,0.15); position: relative; border-left: 4px solid #E8395A;">
+                <button (click)="deleteReply(comment, reply.id)" title="Excluir resposta"
+                        style="position: absolute; top: 10px; right: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; opacity: 0.6;">
+                  <span class="material-icons" style="font-size: 18px;">delete_outline</span>
+                </button>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                  <div style="width: 28px; height: 28px; border-radius: 50%; background-color: #E8395A; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #F5F0E8; font-weight: 500;">{{ reply.authorName[0].toUpperCase() }}</span>
+                  </div>
+                  <div>
+                    <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #1A1A1A;">{{ reply.authorName }}</p>
+                    <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">{{ reply.createdAt | date:'dd/MM/yyyy' }}</p>
+                  </div>
+                </div>
+                <p style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #1A1A1A; line-height: 1.7;">{{ reply.text }}</p>
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+
     </div>
-
   </div>
-</div>
+}

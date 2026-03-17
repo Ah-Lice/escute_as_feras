@@ -20,7 +20,7 @@
   @if (isEditorOpen()) {
     <app-post-editor
       (close)="closeEditor()"
-      (publish)="closeEditor()">
+      (publish)="onPublish($event)">
     </app-post-editor>
   }
 
@@ -31,82 +31,81 @@
       Publicações recentes
     </h2>
 
-    <div style="display: flex; flex-direction: column; gap: 24px;">
-      @for (post of posts; track post.id) {
+    @if (isLoading()) {
+      <div style="text-align: center; padding: 60px 0;">
+        <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #4A7C2F;">Carregando...</p>
+      </div>
+    } @else if (posts.length === 0) {
+      <div style="text-align: center; padding: 60px 0;">
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #888; font-style: italic;">Nenhum texto publicado ainda. Seja a primeira a soltar sua fera!</p>
+      </div>
+    } @else {
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        @for (post of posts; track post.id) {
 
-        <div style="background-color: #fff; border-radius: 12px 0 12px 12px; padding: 32px; border: 1px solid rgba(232,137,26,0.15); position: relative; overflow: hidden;">
+          <div style="background-color: #fff; border-radius: 12px 0 12px 12px; padding: 32px; border: 1px solid rgba(232,137,26,0.15); position: relative; overflow: hidden;">
 
-          <!-- Barra lateral laranja -->
-          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #E8891A; border-radius: 12px 0 0 12px;"></div>
+            <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #E8891A; border-radius: 12px 0 0 12px;"></div>
 
-          <!-- Orelha dobrada no canto superior direito -->
-          <div style="position: absolute; top: 0; right: 0; width: 0; height: 0;
-            border-style: solid;
-            border-width: 0 56px 56px 0;
-            border-color: transparent #F5F0E8 transparent transparent;
-            filter: drop-shadow(-3px 3px 3px rgba(0,0,0,0.25));
-            z-index: 2;">
-          </div>
-          <div style="position: absolute; top: 0; right: 0; width: 40px; height: 40px;
-            background: linear-gradient(225deg, #E8891A 50%, transparent 50%);
-            border-radius: 0 0 0 4px;
-            z-index: 1;">
-          </div>
-
-          <!-- Tag -->
-          <div style="display: flex; align-items: center; margin-bottom: 12px;">
-            <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #E8891A; background-color: rgba(232,137,26,0.1); border-radius: 20px; padding: 3px 10px; text-transform: uppercase; letter-spacing: 0.08em;">
-              {{ post.tag }}
-            </span>
-          </div>
-
-          <!-- Título -->
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #1A1A1A; margin: 0 0 8px; line-height: 1.3;">
-            <a [routerLink]="['/blog', post.id]" style="text-decoration: none; color: inherit;">
-              {{ post.titulo }}
-            </a>
-          </h3>
-
-          <!-- Trecho -->
-          <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #444; line-height: 1.8; margin-bottom: 20px;">
-            {{ post.trecho }}
-            <span style="color: #E8891A;">...</span>
-          </p>
-
-          <!-- Divisor rosa -->
-          <div style="height: 1px; background-color: #E8395A; opacity: 0.2; margin-bottom: 16px;"></div>
-
-          <!-- Rodapé do card -->
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <div style="width: 32px; height: 32px; border-radius: 50%; background-color: #2D5016; display: flex; align-items: center; justify-content: center;">
-                @if (post.anonimo) {
-                  <span class="material-icons" style="font-size: 16px; color: #F5F0E8;">visibility_off</span>
-                } @else {
-                  <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #F5F0E8; font-weight: 500;">{{ post.autor![0].toUpperCase() }}</span>
-                }
-              </div>
-              <div>
-                <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016;">
-                  {{ post.anonimo ? 'Anônimo' : post.autor }}
-                </p>
-                <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">
-                  {{ post.data | date:'dd \'de\' MMMM \'de\' yyyy' : '' : 'pt-BR' }}
-                </p>
-              </div>
+            <div style="position: absolute; top: 0; right: 0; width: 0; height: 0;
+              border-style: solid; border-width: 0 56px 56px 0;
+              border-color: transparent #F5F0E8 transparent transparent;
+              filter: drop-shadow(-3px 3px 3px rgba(0,0,0,0.25)); z-index: 2;">
+            </div>
+            <div style="position: absolute; top: 0; right: 0; width: 56px; height: 56px;
+              background: linear-gradient(225deg, #E8891A 50%, transparent 50%);
+              border-radius: 0 0 0 4px; z-index: 1;">
             </div>
 
-            <!-- Ler mais -->
-            <a [routerLink]="['/blog', post.id]"
-               style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 500;">
-              Ler texto completo
-              <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
-            </a>
-          </div>
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+              <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #E8891A; background-color: rgba(232,137,26,0.1); border-radius: 20px; padding: 3px 10px; text-transform: uppercase; letter-spacing: 0.08em;">
+                {{ post.tag }}
+              </span>
+            </div>
 
-        </div>
-      }
-    </div>
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #1A1A1A; margin: 0 0 8px; line-height: 1.3;">
+              <a [routerLink]="['/blog', post.id]" style="text-decoration: none; color: inherit;">
+                {{ post.titulo }}
+              </a>
+            </h3>
+
+            <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #444; line-height: 1.8; margin-bottom: 20px;">
+              {{ getTrecho(post.conteudo) }}
+              <span style="color: #E8891A;">...</span>
+            </p>
+
+            <div style="height: 1px; background-color: #E8395A; opacity: 0.2; margin-bottom: 16px;"></div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background-color: #2D5016; display: flex; align-items: center; justify-content: center;">
+                  @if (post.anonimo) {
+                    <span class="material-icons" style="font-size: 16px; color: #F5F0E8;">visibility_off</span>
+                  } @else {
+                    <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: #F5F0E8; font-weight: 500;">{{ post.autor?.name?.[0]?.toUpperCase() }}</span>
+                  }
+                </div>
+                <div>
+                  <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016;">
+                    {{ post.anonimo ? 'Anônimo' : post.autor?.name }}
+                  </p>
+                  <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">
+                    {{ post.createdAt | date:"dd 'de' MMMM 'de' yyyy" : '' : 'pt-BR' }}
+                  </p>
+                </div>
+              </div>
+
+              <a [routerLink]="['/blog', post.id]"
+                 style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 500;">
+                Ler texto completo
+                <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
+              </a>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
 
   </div>
 </div>
