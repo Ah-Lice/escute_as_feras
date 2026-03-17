@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,12 +23,18 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("Não foi possível prosseguir com o cadastro.");
+            throw new RuntimeException("Não foi possível completar o cadastro");
         }
 
         User user = User.builder()
                 .name(request.name())
                 .email(request.email())
+                .phone(request.phone())
+                .birthDate(request.birthDate() != null && !request.birthDate().isEmpty()
+                        ? LocalDate.parse(request.birthDate())
+                        : null)
+                .profession(request.profession())
+                .preferredGenre(request.preferredGenre())
                 .password(request.password() != null
                         ? passwordEncoder.encode(request.password())
                         : null)
@@ -55,7 +63,7 @@ public class AuthService {
         );
 
         User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Usuário e/ou Senha incorretos."));
+                .orElseThrow(() -> new RuntimeException("Credenciais inválidas"));
 
         String token = jwtUtil.generateToken(user);
 

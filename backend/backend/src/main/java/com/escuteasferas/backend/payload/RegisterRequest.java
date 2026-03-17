@@ -12,6 +12,16 @@ public record RegisterRequest(
         @NotBlank(message = "Email é obrigatório")
         String email,
 
-        @Size(min = 6, message = "Senha deve ter no mínimo 6 caracteres")
+        @NotBlank(message = "Telefone é obrigatório")
+        String phone,
+
+        @NotBlank(message = "Data de nascimento é obrigatória")
+        String birthDate,
+
+        String profession,
+
+        String preferredGenre,
+
+        @Size(min = 8, message = "Senha deve conter no mínimo 8 caracteres")
         String password
 ) {}
