@@ -31,7 +31,7 @@ export class NavbarComponent {
       this.isNavbarVisible.set(false);
       this.isMenuOpen.set(false);
       this.visibilityChange.emit(false);
-    }, 300);
+    }, 200);
   }
 
   navLinks = [

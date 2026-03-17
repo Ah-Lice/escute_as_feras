@@ -19,7 +19,7 @@
         <!-- Tags -->
         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
           @for (tag of book.tags; track tag) {
-            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; border: 1px solid #E8891A; border-radius: 20px; padding: 4px 12px;">{{ tag }}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #F5F0E8; border: 1px solid #E8395A; background-color: rgba(232,57,90,0.1); border-radius: 20px; padding: 4px 12px;">{{ tag }}</span>
           }
         </div>
 
@@ -56,7 +56,7 @@
 
     <!-- Descrição do livro -->
     <div style="margin-bottom: 48px;">
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px;">Sobre o livro</h2>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">Sobre o livro</h2>
       <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #1A1A1A; line-height: 1.9;">{{ book.description }}</p>
     </div>
 
@@ -65,7 +65,7 @@
 
     <!-- Sobre a autora -->
     <div style="margin-bottom: 48px;">
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px;">Sobre a autora</h2>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">Sobre a autora</h2>
       <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #1A1A1A; line-height: 1.9;">{{ book.authorBio }}</p>
     </div>
 
@@ -74,7 +74,7 @@
 
     <!-- Link arquivo -->
     <div style="margin-bottom: 48px; text-align: center;">
-      <a routerLink="/arquivo" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4A7C2F; text-decoration: underline;">
+      <a routerLink="/arquivo" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: underline;">
         Ver livros discutidos anteriormente →
       </a>
     </div>
@@ -84,19 +84,19 @@
 
     <!-- Comentários -->
     <div>
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 32px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2D5016; margin-bottom: 32px; padding-bottom: 10px; border-bottom: 2px solid #E8395A; display: inline-block;">
         Comentários ({{ comments.length }})
       </h2>
 
       <!-- Formulário novo comentário -->
-      <div style="background-color: #fff; border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(74,124,47,0.2);">
+      <div style="background-color: #fff; border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(74,124,47,0.2); border-left: 4px solid #E8395A;">
         <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #2D5016; margin-bottom: 16px;">Deixe seu comentário</p>
         <input type="text" [(ngModel)]="newComment.author" placeholder="Seu nome"
                style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; box-sizing: border-box; outline: none;" />
         <textarea [(ngModel)]="newComment.text" placeholder="O que você achou do livro?" rows="4"
                   style="width: 100%; padding: 10px 14px; border: 1.5px solid #4A7C2F; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
         <button (click)="addComment()"
-                style="margin-top: 12px; padding: 10px 24px; background-color: #2D5016; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer;">
+                style="margin-top: 12px; padding: 10px 24px; background-color: #E8395A; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border: none; border-radius: 6px; cursor: pointer;">
           Comentar
         </button>
       </div>
@@ -106,7 +106,7 @@
         <div style="margin-bottom: 24px;">
 
           <!-- Comentário principal -->
-          <div style="background-color: #fff; border-radius: 8px; padding: 20px; border: 1px solid rgba(74,124,47,0.2); position: relative;">
+          <div style="background-color: #fff; border-radius: 8px; padding: 20px; border: 1px solid rgba(74,124,47,0.2); position: relative; border-left: 4px solid #E8891A;">
 
             <!-- Botão excluir -->
             <button (click)="deleteComment(comment.id)" title="Apagar comentário"
@@ -115,17 +115,17 @@
             </button>
 
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; background-color: #2D5016; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; background-color: #E8395A; display: flex; align-items: center; justify-content: center;">
                 <span style="font-family: 'Inter', sans-serif; font-size: 14px; color: #F5F0E8; font-weight: 500;">{{ comment.author[0].toUpperCase() }}</span>
               </div>
               <div>
                 <p style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #1A1A1A;">{{ comment.author }}</p>
-                <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #888;">{{ comment.date | date:'dd/MM/yyyy' }}</p>
+                <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">{{ comment.date | date:'dd/MM/yyyy' }}</p>
               </div>
             </div>
             <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #1A1A1A; line-height: 1.7;">{{ comment.text }}</p>
             <button (click)="toggleReplyForm(comment)"
-                    style="margin-top: 12px; font-family: 'Inter', sans-serif; font-size: 12px; color: #4A7C2F; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;">
+                    style="margin-top: 12px; font-family: 'Inter', sans-serif; font-size: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;">
               Responder
             </button>
           </div>
@@ -150,21 +150,21 @@
 
           <!-- Respostas -->
           @for (reply of comment.replies; track reply.id) {
-            <div style="margin-left: 32px; margin-top: 8px; background-color: #f9f6f0; border-radius: 8px; padding: 16px; border: 1px solid rgba(74,124,47,0.15); position: relative;">
+            <div style="margin-left: 32px; margin-top: 8px; background-color: #f9f6f0; border-radius: 8px; padding: 16px; border: 1px solid rgba(74,124,47,0.15); position: relative; border-left: 4px solid #E8395A;">
 
               <!-- Botão excluir reply -->
-              <button (click)="deleteReply(comment, reply.id)" title="Excluir comentário"
+              <button (click)="deleteReply(comment, reply.id)" title="Excluir resposta"
                       style="position: absolute; top: 10px; right: 12px; color: #E8395A; background: none; border: none; cursor: pointer; padding: 0; opacity: 0.6;">
                 <span class="material-icons" style="font-size: 18px;">delete_outline</span>
               </button>
 
               <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                <div style="width: 28px; height: 28px; border-radius: 50%; background-color: #4A7C2F; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 28px; height: 28px; border-radius: 50%; background-color: #E8395A; display: flex; align-items: center; justify-content: center;">
                   <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #F5F0E8; font-weight: 500;">{{ reply.author[0].toUpperCase() }}</span>
                 </div>
                 <div>
                   <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #1A1A1A;">{{ reply.author }}</p>
-                  <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #888;">{{ reply.date | date:'dd/MM/yyyy' }}</p>
+                  <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: #E8891A;">{{ reply.date | date:'dd/MM/yyyy' }}</p>
                 </div>
               </div>
               <p style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #1A1A1A; line-height: 1.7;">{{ reply.text }}</p>

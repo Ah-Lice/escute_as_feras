@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { PostEditorComponent } from '../post-editor/post-editor';
 
 interface Post {
   id: number;
@@ -14,12 +15,20 @@ interface Post {
 
 @Component({
   selector: 'app-speakup',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, PostEditorComponent],
   templateUrl: './speakup.html',
-  styleUrl: './speakup.css'
+  styleUrl: './speakup.css',
+
 })
 export class SpeakupComponent {
+  isEditorOpen = signal(false);
+  openEditor() {
+    this.isEditorOpen.set(true);
+  }
 
+  closeEditor() {
+    this.isEditorOpen.set(false);
+  }
   posts: Post[] = [
     {
       id: 1,

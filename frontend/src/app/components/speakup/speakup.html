@@ -8,13 +8,21 @@
       <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #F5F0E8; opacity: 0.8; line-height: 1.7; max-width: 600px; text-align: justify;">
         Espaço de escrita livre onde mulheres soltam suas vozes em forma de texto. Poesias, crônicas, contos, ensaios, devaneios, não importa! É um espaço de criação sem censura, onde palavras não são proibidas.
       </p>
-      <a routerLink="/solte-suas-feras/novo"
-         style="display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; padding: 12px 24px; background-color: #E8891A; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border-radius: 8px; text-decoration: none;">
+      <button (click)="openEditor()"
+              style="display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; padding: 12px 24px; background-color: #E8891A; color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; border-radius: 8px; border: none; cursor: pointer;">
         <span class="material-icons" style="font-size: 18px;">edit</span>
         Escrever novo texto
-      </a>
+      </button>
     </div>
   </div>
+
+  <!-- Editor modal -->
+  @if (isEditorOpen()) {
+    <app-post-editor
+      (close)="closeEditor()"
+      (publish)="closeEditor()">
+    </app-post-editor>
+  }
 
   <!-- Lista de posts -->
   <div style="max-width: 900px; margin: 0 auto; padding: 48px 32px 60px;">
@@ -54,7 +62,7 @@
 
           <!-- Título -->
           <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #1A1A1A; margin: 0 0 8px; line-height: 1.3;">
-            <a [routerLink]="['/solte-suas-feras', post.id]" style="text-decoration: none; color: inherit;">
+            <a [routerLink]="['/blog', post.id]" style="text-decoration: none; color: inherit;">
               {{ post.titulo }}
             </a>
           </h3>
@@ -89,7 +97,7 @@
             </div>
 
             <!-- Ler mais -->
-            <a [routerLink]="['/solte-suas-feras', post.id]"
+            <a [routerLink]="['/blog', post.id]"
                style="font-family: 'Inter', sans-serif; font-size: 13px; color: #E8395A; text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 500;">
               Ler texto completo
               <span class="material-icons" style="font-size: 16px;">arrow_forward</span>

@@ -8,12 +8,14 @@ import { AboutComponent } from './components/about/about';
 import { ArchiveComponent } from './components/archive/archive';
 import { LoginComponent } from './components/auth/login/login';
 import { RegisterComponent } from './components/auth/register/register';
+import { SpeakupPostComponent } from './components/speakup-post/speakup-post';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'acontecendo', component: HappeningComponent },
   { path: 'biblioteca', component: LibraryComponent },
   { path: 'solte-suas-feras', component: SpeakupComponent },
+  { path: 'blog/:id', component: SpeakupPostComponent },
   { path: 'eventos', component: EventsComponent },
   { path: 'quem-somos', component: AboutComponent },
   { path: 'arquivo', component: ArchiveComponent },
