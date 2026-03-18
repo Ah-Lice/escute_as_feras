@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LibraryService } from '../../services/library.service';
 
 interface Book {
   id: number;
@@ -11,19 +12,21 @@ interface Book {
   anoPublicacao: number;
   paisPublicacao: string;
   genero: string;
-  capa: string | null;
+  capaPath: string | null;
+  epubPath: string | null;
 }
 
 @Component({
   selector: 'app-library',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgOptimizedImage],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './library.html',
-  styleUrl: './library.css',
+  styleUrl: './library.css'
 })
-export class LibraryComponent {
+export class LibraryComponent implements OnInit {
   searchQuery = '';
   isModalOpen = signal(false);
   isLoading = signal(false);
+  isLoadingBooks = signal(true);
   successMessage = signal('');
   errorMessage = signal('');
   capaPreview = signal<string | null>(null);
@@ -33,27 +36,20 @@ export class LibraryComponent {
   itemsPerPage = 10;
 
   generos = [
-    'Romance',
-    'Ficção Científica',
-    'Fantasia',
-    'Terror',
-    'Poesia',
-    'Ensaio',
-    'Biografia',
-    'Conto',
-    'Crônica',
-    'Literatura Estrangeira',
-    'Literatura Brasileira',
-    'Psicanálise',
-    'Antropologia',
-    'Filosofia',
+    'Romance', 'Ficção Científica', 'Fantasia', 'Terror', 'Poesia',
+    'Ensaio', 'Biografia', 'Conto', 'Crônica', 'Literatura Estrangeira',
+    'Literatura Brasileira', 'Psicanálise', 'Antropologia', 'Filosofia'
   ];
 
   bookForm: FormGroup;
   capaFile: File | null = null;
   epubFile: File | null = null;
+  books: Book[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private libraryService: LibraryService
+  ) {
     this.bookForm = this.fb.group({
       titulo: ['', Validators.required],
       autor: ['', Validators.required],
@@ -65,153 +61,34 @@ export class LibraryComponent {
     });
   }
 
-  books: Book[] = [
-    {
-      id: 1,
-      titulo: 'Trilogia de Copenhagen',
-      autor: 'Tove Ditlevsen',
-      editora: 'Companhia das Letras',
-      isbn: '9788535935',
-      anoPublicacao: 2022,
-      paisPublicacao: 'Dinamarca',
-      genero: 'Autobiografia',
-      capa: null,
-    },
-    {
-      id: 2,
-      titulo: 'O Segundo Sexo',
-      autor: 'Simone de Beauvoir',
-      editora: 'Nova Fronteira',
-      isbn: '9788f55520917',
-      anoPublicacao: 2019,
-      paisPublicacao: 'França',
-      genero: 'Filosofia',
-      capa: null,
-    },
-    {
-      id: 3,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '978853tf5928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 4,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '9788535345928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 5,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '9788535976528',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 6,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '978853765928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 7,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '978855635928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 8,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '978sd8535928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 9,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '978853r35928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 10,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '978d8535928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 11,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '97812853435928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-    {
-      id: 12,
-      titulo: 'Meu Amado',
-      autor: 'Toni Morrison',
-      editora: 'Companhia das Letras',
-      isbn: '9788535928',
-      anoPublicacao: 2020,
-      paisPublicacao: 'Estados Unidos',
-      genero: 'Ficção',
-      capa: null,
-    },
-  ];
+  ngOnInit() {
+    this.loadBooks();
+  }
+
+  loadBooks() {
+    this.isLoadingBooks.set(true);
+    this.libraryService.getAll().subscribe({
+      next: (data) => {
+        this.books = data;
+        this.isLoadingBooks.set(false);
+      },
+      error: () => {
+        this.isLoadingBooks.set(false);
+      }
+    });
+  }
 
   get filteredBooks(): Book[] {
     if (!this.searchQuery.trim()) return this.books;
     const q = this.searchQuery.toLowerCase();
-    return this.books.filter(
-      (b) =>
-        b.titulo.toLowerCase().includes(q) ||
-        b.autor.toLowerCase().includes(q) ||
-        b.editora.toLowerCase().includes(q) ||
-        b.isbn.toLowerCase().includes(q) ||
-        b.anoPublicacao.toString().includes(q) ||
-        b.paisPublicacao.toLowerCase().includes(q) ||
-        b.genero.toLowerCase().includes(q),
+    return this.books.filter(b =>
+      b.titulo?.toLowerCase().includes(q) ||
+      b.autor?.toLowerCase().includes(q) ||
+      b.editora?.toLowerCase().includes(q) ||
+      b.isbn?.toLowerCase().includes(q) ||
+      b.anoPublicacao?.toString().includes(q) ||
+      b.paisPublicacao?.toLowerCase().includes(q) ||
+      b.genero?.toLowerCase().includes(q)
     );
   }
 
@@ -308,26 +185,31 @@ export class LibraryComponent {
       this.errorMessage.set('O arquivo .epub é obrigatório.');
       return;
     }
-    const isbnDuplicado = this.books.some(
-      (b) => b.isbn.toLowerCase() === this.bookForm.value.isbn.toLowerCase(),
-    );
-    if (isbnDuplicado) {
-      this.errorMessage.set('Este livro já está cadastrado no acervo (ISBN duplicado).');
-      return;
-    }
+
     this.isLoading.set(true);
     this.errorMessage.set('');
-    setTimeout(() => {
-      const newBook: Book = {
-        id: Date.now(),
-        ...this.bookForm.value,
-        capa: this.capaPreview(),
-      };
-      this.books.unshift(newBook);
-      this.isLoading.set(false);
-      this.successMessage.set(`"${newBook.titulo}" foi adicionado ao acervo com sucesso!`);
-      setTimeout(() => this.closeModal(), 2500);
-    }, 800);
+
+    const formData = new FormData();
+    formData.append('dados', new Blob([JSON.stringify(this.bookForm.value)], { type: 'application/json' }));
+    formData.append('capa', this.capaFile);
+    formData.append('epub', this.epubFile);
+
+    this.libraryService.create(formData).subscribe({
+      next: (newBook) => {
+        this.books.unshift(newBook);
+        this.isLoading.set(false);
+        this.successMessage.set(`"${newBook.titulo}" foi adicionado ao acervo com sucesso!`);
+        setTimeout(() => this.closeModal(), 2500);
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        if (err.status === 409 || err.error?.message?.includes('ISBN')) {
+          this.errorMessage.set('Este livro já está cadastrado no acervo (ISBN duplicado).');
+        } else {
+          this.errorMessage.set('Erro ao cadastrar livro. Tente novamente.');
+        }
+      }
+    });
   }
 
   downloadBook(book: Book) {
